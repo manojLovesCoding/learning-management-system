@@ -10,7 +10,7 @@ const Navbar = () => {
   const { openSignIn } = useClerk();
   const { user } = useUser();
 
-  const { navigate } = useContext(AppContext);
+  const { navigate, isEducator } = useContext(AppContext);
 
   return (
     <div
@@ -29,8 +29,14 @@ const Navbar = () => {
         <div className="flex item-center gap-5">
           {user && (
             <>
-              <button>Become Eductor</button>|
-              <Link to="/my-enrollments">My Enrollments</Link>
+              <button
+                onClick={() => {
+                  navigate("/educator");
+                }}
+              >
+                {isEducator ? "Educator Dashboard" : "Become Eductor"}
+              </button>
+              |<Link to="/my-enrollments">My Enrollments</Link>
             </>
           )}
         </div>
@@ -52,8 +58,14 @@ const Navbar = () => {
         <div className="flex items-center gap-1 sm:gap-2 max-sm:text-xs">
           {user && (
             <>
-              <button>Become Eductor</button>|
-              <Link to="/my-enrollments">My Enrollments</Link>
+              <button
+                onClick={() => {
+                  navigate("/educator");
+                }}
+              >
+                {isEducator ? "Educator Dashboard" : "Become Eductor"}
+              </button>
+              |<Link to="/my-enrollments">My Enrollments</Link>
             </>
           )}
         </div>
