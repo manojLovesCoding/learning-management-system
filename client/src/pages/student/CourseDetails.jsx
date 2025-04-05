@@ -5,12 +5,12 @@ import Loading from "../../components/student/Loading";
 import { assets } from "../../assets/assets";
 import humanizeDuration from "humanize-duration";
 import Footer from "../../components/student/Footer";
-import Youtube from "react-youtube";
+import YouTube from "react-youtube";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const [courseData, setCourseData] = useState(null);
-  const [openSection, setOpenSection] = useState({});
+  const [openSections, setOpenSections] = useState({});
   const [isAlreadyEnrolled, setIsAlreadyEnrolled] = useState(false);
   const [playerData, setPlayerData] = useState(null);
   const {
@@ -31,7 +31,7 @@ const CourseDetails = () => {
   }, [allCourses]);
 
   const toggleSection = (index) => {
-    setOpenSection((prev) => ({ ...prev, [index]: !prev[index] }));
+    setOpenSections((prev) => ({ ...prev, [index]: !prev[index] }));
   };
   return courseData ? (
     <>
@@ -100,7 +100,7 @@ const CourseDetails = () => {
                     <div className="flex items-center gap-2">
                       <img
                         className={`transform transition-transform ${
-                          openSection[index] ? "rotate-180" : ""
+                          openSections[index] ? "rotate-180" : ""
                         }`}
                         src={assets.down_arrow_icon}
                         alt="downArrowIcon"
@@ -117,7 +117,7 @@ const CourseDetails = () => {
 
                   <div
                     className={`overflow-hidden transition-all duration-300 ${
-                      openSection[index] ? "max-h-96" : "max-h-0"
+                      openSections[index] ? "max-h-96" : "max-h-0"
                     }`}
                   >
                     <ul className="list-disc md:pl-10 pl-4 pr-4 py-2 text-gray-600 border-t border-gray-300">
@@ -177,7 +177,7 @@ const CourseDetails = () => {
         {/* right column*/}
         <div className="max-w-sm sm:max-w-[424px] z-10 shadow-md rounded-t md:rounded-none overflow-hidden bg-white min-w-[300px] sm:min-w-[420px]">
           {playerData ? (
-            <Youtube
+            <YouTube
               videoId={playerData.videoId}
               opts={{
                 playerVars: {
