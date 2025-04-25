@@ -7,8 +7,8 @@ import {
 
 const userRouter = express.Router();
 
-userRouter.get("/data", getUserData);
-userRouter.get("/enrolled-courses", userEnrolledCourses);
+userRouter.get("/data", getUserData); //route passed
+userRouter.get("/enrolled-courses", userEnrolledCourses); //route passed
 userRouter.post("/purchase", purchaseCourse);
 
 export default userRouter;
