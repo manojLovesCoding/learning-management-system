@@ -26,11 +26,7 @@ app.post("/clerk", express.json(), clerkWebhooks);
 app.use("/api/educator", express.json(), educatorRouter); //did postman test.all routes passed
 app.use("/api/course", express.json(), courseRouter); //did postman test.all routes passed
 app.use("/api/user", express.json(), userRouter);
-app.post(
-  "/stripe",
-  express.raw({ type: "application / json" }),
-  stripeWebhooks
-);
+app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
 //port
 const PORT = process.env.PORT || 5000;
