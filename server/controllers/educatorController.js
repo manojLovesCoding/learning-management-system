@@ -107,7 +107,7 @@ export const educatorDashboardData = async (req, res) => {
   }
 };
 
-//get enrolled students data with purchase data
+// Get enrolled students data with purchase date
 export const getEnrolledStudentsData = async (req, res) => {
   try {
     const educator = req.auth.userId;
@@ -124,7 +124,7 @@ export const getEnrolledStudentsData = async (req, res) => {
     const enrolledStudents = purchases.map((purchase) => ({
       student: purchase.userId,
       courseTitle: purchase.courseId.courseTitle,
-      purchaseData: purchase.createdAT
+      purchaseDate: purchase.createdAt // ✅ correct key and casing
     }));
 
     res.json({ success: true, enrolledStudents });

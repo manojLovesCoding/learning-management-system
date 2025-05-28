@@ -11,7 +11,7 @@ const MyEnrollments = () => {
     calculateCourseDuration,
     navigate,
     userData,
-    fetchUserEnrolledCourses,
+
     backendUrl,
     getToken,
     calculateNoOfLectures
@@ -47,19 +47,13 @@ const MyEnrollments = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (userData) {
-        await fetchUserEnrolledCourses();
-      }
-    };
-    fetchData();
-  }, [userData]);
-
-  useEffect(() => {
     if (enrolledCourses.length > 0) {
       getCourseProgress();
     }
   }, [enrolledCourses]);
+
+  console.log("userData", userData);
+  console.log("enrolledCourses", enrolledCourses);
 
   return (
     <>

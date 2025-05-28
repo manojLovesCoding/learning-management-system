@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import Loading from "../../components/student/Loading";
 import { AppContext } from "../../context/AppContext";
 import axios from "axios";
@@ -7,7 +6,6 @@ import { toast } from "react-toastify";
 
 const StudentsEnrolled = () => {
   const { backendUrl, getToken, isEducator } = useContext(AppContext);
-
   const [enrolledStudents, setEnrolledStudents] = useState(null);
 
   const fetchEnrolledStudents = async () => {
@@ -33,6 +31,20 @@ const StudentsEnrolled = () => {
       fetchEnrolledStudents();
     }
   }, [isEducator]);
+
+  // Optional: Debug enrolled student data
+  useEffect(() => {
+    if (enrolledStudents) {
+      console.log("Enrolled students:", enrolledStudents);
+    }
+  }, [enrolledStudents]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toString() !== "Invalid Date"
+      ? date.toLocaleDateString()
+      : "N/A";
+  };
 
   return enrolledStudents ? (
     <div className="min-h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0">
@@ -60,12 +72,13 @@ const StudentsEnrolled = () => {
                   <img
                     className="w-9 h-9 rounded-full"
                     src={item.student.imageUrl}
+                    alt={item.student.name}
                   />
-                  <span>{item.student.name} </span>
+                  <span>{item.student.name}</span>
                 </td>
-                <td className="px-4 py-3 truncate">{item.courseTitle} </td>
+                <td className="px-4 py-3 truncate">{item.courseTitle}</td>
                 <td className="px-4 py-3 hidden sm:table-cell">
-                  {new Date(item.purchaseDate).toLocaleDateString()}
+                  {formatDate(item.purchaseDate)}
                 </td>
               </tr>
             ))}

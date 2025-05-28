@@ -26,7 +26,7 @@ export const userEnrolledCourses = async (req, res) => {
     const userId = req.auth.userId;
     const userData = await User.findById(userId).populate("enrolledCourses");
 
-    res.json({ sucess: true, enrolledCourses: userData.enrolledCourses });
+    res.json({ success: true, enrolledCourses: userData.enrolledCourses });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
@@ -90,12 +90,26 @@ export const purchaseCourse = async (req, res) => {
   }
 };
 
-//update user course progress
+// Update user course progress
 export const updateUserCourseProgress = async (req, res) => {
   try {
     const userId = req.auth.userId;
     const { courseId, lectureId } = req.body;
-    const progressData = await CourseProgress.findOne({ userId, courseId });
+
+    let progressData = await CourseProgress.findOne({ userId, courseId });
+
+    // Get total number of lectures from the course
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.json({ success: false, message: "Course not found" });
+    }
+
+    let totalLectures = 0;
+    course.courseContent.forEach((chapter) => {
+      if (Array.isArray(chapter.chapterContent)) {
+        totalLectures += chapter.chapterContent.length;
+      }
+    });
 
     if (progressData) {
       if (progressData.lectureCompleted.includes(lectureId)) {
@@ -106,14 +120,23 @@ export const updateUserCourseProgress = async (req, res) => {
       }
 
       progressData.lectureCompleted.push(lectureId);
+
+      // Check if course is now completed
+      if (progressData.lectureCompleted.length === totalLectures) {
+        progressData.completed = true;
+      }
+
       await progressData.save();
     } else {
+      const isCompleted = totalLectures === 1; // only one lecture being completed now
       await CourseProgress.create({
         userId,
         courseId,
-        lectureCompleted: [lectureId]
+        lectureCompleted: [lectureId],
+        completed: isCompleted
       });
     }
+
     res.json({ success: true, message: "Progress Updated" });
   } catch (error) {
     res.json({ success: false, message: error.message });
